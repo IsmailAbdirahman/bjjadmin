@@ -72,7 +72,7 @@ class AddNewUser extends ConsumerWidget {
                             );
                           });
                     }
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }),
             ),
           ],
