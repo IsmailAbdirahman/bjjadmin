@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:bjjapp/models/history_moddel.dart';
 import 'package:bjjapp/models/product_model.dart';
+import 'package:bjjapp/models/users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String PRODUCTS = "products";
@@ -41,14 +43,48 @@ class Service {
   }
 
 //---------------- adding new user ----------------------
-  addNewUser(String phoneNumber) async {
-    await users.doc(phoneNumber).set({"phoneNumber": phoneNumber}).then(
-        (value) => print("Added new user"));
+  addNewUser(String phoneNumber, bool isBlocked) async {
+    await users
+        .doc(phoneNumber)
+        .set({"phoneNumber": phoneNumber, "isBlocked": isBlocked}).then(
+            (value) => print("Added new user"));
     await addDocument(phoneNumber);
   }
 
   Future addDocument(String phoneNumber) async {
     return users.doc(phoneNumber);
+  }
+
+  List<UserInfo> getPhoneNumberSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UserInfo(
+          phoneNumber: doc['phoneNumber'], isBlocked: doc['isBlocked']);
+    }).toList();
+  }
+
+  blockUnblockUser(String phoneNumber, bool isBlocked) async {
+    await users.doc(phoneNumber).update({"isBlocked": isBlocked}).then(
+        (value) => print("user Status Updated"));
+  }
+
+  //Get specific User History
+  List<HistoryModel> getHistorySnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return HistoryModel(
+          historyID: doc['historyID'],
+          productName: doc['productName'],
+          pricePerItemToSell: doc['pricePerItemToSell'],
+          totalPrice: doc['totalPrice'],
+          quantity: doc['quantity']);
+    }).toList();
+  }
+
+  Stream<List<HistoryModel>>  getHistoryStream(String userID) {
+    return users
+        .doc(userID)
+        .collection("History")
+        .snapshots()
+        .map(getHistorySnapshot);
   }
 
 //------------------------------------Other User---------------------

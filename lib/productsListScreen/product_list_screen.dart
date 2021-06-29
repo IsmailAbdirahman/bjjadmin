@@ -1,6 +1,5 @@
 import 'package:bjjapp/models/product_model.dart';
 import 'package:bjjapp/productsListScreen/add_new_products.dart';
-import 'package:bjjapp/productsListScreen/product_details.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen_state.dart';
 import 'package:bjjapp/signin/signin_state.dart';
 import 'package:bjjapp/widgets/search.dart';
@@ -58,24 +57,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       return ListView.builder(
                           itemCount: dataSnapshot!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductDetails(
-                                            name:
-                                                dataSnapshot[index].productName,
-                                            quantity:
-                                                dataSnapshot[index].quantity,
-                                            pricePerItem: dataSnapshot[index]
-                                                .pricePerItemToSell,
-                                          )),
-                                );
-                              },
-                              child: ProductTile(
-                                productModel: dataSnapshot[index],
-                              ),
+                            return ProductTile(
+                              productModel: dataSnapshot[index],
                             );
                           });
                     }

@@ -15,11 +15,7 @@ class DisplayData extends StatefulWidget {
 
 class homeState extends State<DisplayData> {
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = <Widget>[
-    ProductsListScreen(),
-    HistoryScreen(),
-    AddNewUser()
-  ];
+  List<Widget> _widgetOptions = <Widget>[ProductsListScreen(), AddNewUser()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -48,8 +44,8 @@ class homeState extends State<DisplayData> {
       unselectedItemColor: Colors.grey,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
-        BottomNavigationBarItem(icon: Icon(Icons.create_outlined), label: "New Account"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.create_outlined), label: "New Account"),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,

@@ -1,5 +1,4 @@
 import 'package:bjjapp/models/product_model.dart';
-import 'package:bjjapp/productsListScreen/product_details.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -61,23 +60,9 @@ class SearchProduct extends SearchDelegate {
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductDetails(
-                        name: suggestionList[index].productName,
-                        quantity: suggestionList[index].quantity,
-                        pricePerItem:
-                        suggestionList[index].pricePerItem,
-                      )),
-                );
-              },
-              child: ProductTile(
-                productModel: suggestionList[index],
+            return  ProductTile(
+              productModel: suggestionList[index],
               //  productModel: suggestionList[index],
-              ),
             );
           }),
     );
@@ -104,23 +89,9 @@ class SearchProduct extends SearchDelegate {
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductDetails(
-                        name: suggestionList[index].productName,
-                        quantity: suggestionList[index].quantity,
-                        pricePerItem:
-                        suggestionList[index].pricePerItem,
-                      )),
-                );
-              },
-              child: ProductTile(
-                productModel: suggestionList[index],
-                //  productModel: suggestionList[index],
-              ),
+            return  ProductTile(
+              productModel: suggestionList[index],
+              //  productModel: suggestionList[index],
             );
           }),
     );

@@ -18,7 +18,6 @@ class ProductListState extends ChangeNotifier {
         pricePerItemToSell: pricePerItemToSell,
         quantity: quantity);
   }
-
   Stream<List<ProductModel>> get getProductStream {
     return Service().products.snapshots().map(Service().getProductSnapshot);
   }
