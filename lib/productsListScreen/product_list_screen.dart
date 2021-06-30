@@ -1,8 +1,7 @@
 import 'package:bjjapp/models/product_model.dart';
 import 'package:bjjapp/productsListScreen/add_new_products.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen_state.dart';
-import 'package:bjjapp/signin/signin_state.dart';
-import 'package:bjjapp/widgets/search.dart';
+import 'package:bjjapp/widgets/serach_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,74 +11,59 @@ class ProductsListScreen extends StatefulWidget {
 }
 
 class _ProductsListScreenState extends State<ProductsListScreen> {
-  Widget searchBar(BuildContext context, var searchProductName) {
-    return IconButton(
-      icon: Icon(
-        Icons.search,
-        color: Colors.white,
-        size: 27,
-      ),
-      onPressed: () {
-        showSearch(
-            context: context,
-            delegate: SearchProduct(searchProductName: searchProductName));
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
-    //context.read(productListProvider).getProductList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Home"),
-        // actions: [
-        //   searchBar(context, productDataList),
-        // ],
-      ),
-      body: Column(
-        children: [
-          Consumer(
-            builder: (BuildContext context, watch, child) {
-              final productProviderWatch = watch(productListProvider);
-              return Expanded(
-                child: StreamBuilder<List<ProductModel>>(
-                  stream: productProviderWatch.getProductStream,
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      var dataSnapshot = snapshot.data;
-                      return ListView.builder(
-                          itemCount: dataSnapshot!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ProductTile(
-                              productModel: dataSnapshot[index],
-                            );
-                          });
-                    }
-                    return Center(child: CircularProgressIndicator());
+    return Consumer(builder: (BuildContext context, watch, child) {
+      final productProviderWatch = watch(productListProvider);
+      return StreamBuilder<List<ProductModel>>(
+          stream: productProviderWatch.getProductStream,
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.data != null) {
+              productProviderWatch.getListOfProducts(snapshot.data!);
+              List<ProductModel> data = productProviderWatch.productList;
+              return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Text("Home"),
+                  actions: [
+                    SearchBarWidget(
+                      searchProductName:
+                          context.read(productListProvider).productList,
+                    ),
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ProductTile(
+                                productModel: data[index],
+                              );
+                            }))
+                  ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddNewProducts()),
+                    );
                   },
                 ),
               );
-            },
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddNewProducts()),
-          );
-        },
-      ),
-    );
+            } else {
+              return CircularProgressIndicator();
+            }
+          });
+    });
   }
 }
 

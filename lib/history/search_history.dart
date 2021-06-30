@@ -1,12 +1,36 @@
+import 'package:bjjapp/history/history_screen.dart';
+import 'package:bjjapp/models/history_moddel.dart';
 import 'package:bjjapp/models/product_model.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
+class SearchBarHistoryWidget extends StatelessWidget {
+  final List<HistoryModel>? searchHistoryID;
 
-class SearchProduct extends SearchDelegate {
-  final List<ProductModel>? searchProductName;
+  const SearchBarHistoryWidget({this.searchHistoryID});
 
-  SearchProduct({this.searchProductName});
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        Icons.search,
+        color: Colors.white,
+        size: 27,
+      ),
+      onPressed: () {
+        showSearch(
+            context: context,
+            delegate: SearchHistory(searchHistoryID: searchHistoryID));
+      },
+    );
+  }
+}
+
+//--
+class SearchHistory extends SearchDelegate {
+  final List<HistoryModel>? searchHistoryID;
+
+  SearchHistory({this.searchHistoryID});
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -43,13 +67,13 @@ class SearchProduct extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     final List suggestionList = (query.isEmpty
-        ? searchProductName
-        : searchProductName!
-        .where((element) => element.productName
-        .toString()
-        .toLowerCase()
-        .startsWith(query.toLowerCase()))
-        .toList())!;
+        ? searchHistoryID
+        : searchHistoryID!
+            .where((element) => element.historyID
+                .toString()
+                .toLowerCase()
+                .startsWith(query.toLowerCase()))
+            .toList())!;
     return Container(
       height: 140,
       width: double.infinity,
@@ -60,8 +84,8 @@ class SearchProduct extends SearchDelegate {
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return  ProductTile(
-              productModel: suggestionList[index],
+            return HistoryTile(
+              historyModel: suggestionList[index],
               //  productModel: suggestionList[index],
             );
           }),
@@ -71,17 +95,16 @@ class SearchProduct extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     final List suggestionList = query.isEmpty
-        ? searchProductName!
-        : searchProductName!
-        .where((element) => element.productName
-        .toString()
-        .toLowerCase()
-        .startsWith(query.toLowerCase()))
-        .toList();
+        ? searchHistoryID!
+        : searchHistoryID!
+            .where((element) => element.historyID
+                .toString()
+                .toLowerCase()
+                .startsWith(query.toLowerCase()))
+            .toList();
     return Container(
       height: 140,
       width: double.infinity,
-
       child: ListView.builder(
           primary: false,
           itemCount: suggestionList.length,
@@ -89,8 +112,8 @@ class SearchProduct extends SearchDelegate {
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return  ProductTile(
-              productModel: suggestionList[index],
+            return HistoryTile(
+              historyModel: suggestionList[index],
               //  productModel: suggestionList[index],
             );
           }),

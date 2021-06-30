@@ -1,6 +1,8 @@
 import 'package:bjjapp/AddNewuser/add_new_user_state.dart';
+import 'package:bjjapp/history/search_history.dart';
 import 'package:bjjapp/models/history_moddel.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen.dart';
+import 'package:bjjapp/widgets/serach_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,42 +18,44 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("History"),
-        // actions: [
-        //   searchBar(context, productDataList),
-        // ],
-      ),
-      body: Column(
-        children: [
-          Consumer(
-            builder: (BuildContext context, watch, child) {
-              final historyStateWatch = watch(addingNewUserProvider);
-              return Expanded(
-                child: StreamBuilder<List<HistoryModel>>(
-                  stream: historyStateWatch.getHistoryStreamm(widget.userID!),
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      var dataSnapshot = snapshot.data;
-                      return ListView.builder(
-                          itemCount: dataSnapshot!.length,
+    return Consumer(builder: (BuildContext context, watch, child) {
+      final historyStateWatch = watch(addingNewUserProvider);
+
+      return StreamBuilder<List<HistoryModel>>(
+          stream: historyStateWatch.getHistoryStreamm(widget.userID!),
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.data != null) {
+              List<HistoryModel> dataSnapshot = snapshot.data!;
+
+              return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Text("History"),
+                  actions: [
+                    SearchBarHistoryWidget(
+                      searchHistoryID: dataSnapshot,
+                    ),
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: dataSnapshot.length,
                           itemBuilder: (BuildContext context, int index) {
                             return HistoryTile(
                               historyModel: dataSnapshot[index],
                             );
-                          });
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  },
+                          }),
+                    ),
+                  ],
                 ),
               );
-            },
-          )
-        ],
-      ),
-    );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          });
+    });
   }
 }
 

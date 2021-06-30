@@ -44,8 +44,7 @@ class homeState extends State<DisplayData> {
       unselectedItemColor: Colors.grey,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.create_outlined), label: "New Account"),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Users"),
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,
