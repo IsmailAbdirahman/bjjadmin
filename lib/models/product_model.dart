@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 class ProductModel {
   String? productName;
-  String? pricePerItemPurchased;
-  String? pricePerItemToSell;
-  String? quantity;
+  double? pricePerItemPurchased;
+  double? pricePerItemToSell;
+  int? quantity;
 
   ProductModel({
     this.productName,

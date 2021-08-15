@@ -62,12 +62,17 @@ class _AddNewProductsState extends State<AddNewProducts> {
             ),
             ElevatedButton(
                 onPressed: () async {
+                  double pricePurchased =
+                      double.parse(_pricePerItemPurchasedController.text);
+                  double priceToSell =
+                      double.parse(_pricePerItemToSellController.text);
+                  int quantity = int.parse(_quantityController.text);
+
                   context.read(productListProvider).addData(
                       productName: _productNameController.text,
-                      pricePerItemPurchased:
-                          _pricePerItemPurchasedController.text,
-                      pricePerItemToSell: _pricePerItemToSellController.text,
-                      quantity: _quantityController.text);
+                      pricePerItemPurchased: pricePurchased,
+                      pricePerItemToSell: priceToSell,
+                      quantity: quantity);
                   Navigator.pop(context);
                 },
                 child: Text("ADD"))
@@ -77,4 +82,3 @@ class _AddNewProductsState extends State<AddNewProducts> {
     );
   }
 }
-

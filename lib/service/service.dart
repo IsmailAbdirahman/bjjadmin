@@ -11,25 +11,69 @@ class Service {
   CollectionReference products =
       FirebaseFirestore.instance.collection(PRODUCTS);
   CollectionReference users = FirebaseFirestore.instance.collection(USERS);
+  double totalPricePurchased = 0;
 
+  double totalPriceOfSell = 0;
   String productID = DateTime.now().toString();
 
   addData(
       {String? productName,
-      String? pricePerItemPurchased,
-      String? pricePerItemToSell,
-      String? quantity}) {
+      double? pricePerItemPurchased,
+      double? pricePerItemToSell,
+      int? quantity}) {
+    products.doc(productID).set({
+      'productID': productID,
+      'productName': productName,
+      'pricePerItemPurchased': pricePerItemPurchased,
+      'pricePerItemToSell': pricePerItemToSell,
+      'quantity': quantity
+    }).then((_) {
+      getTotal(pricePerItemPurchased!, pricePerItemToSell!);
+    });
+  }
+
+  //save the total
+  saveTotal(double totalOfPurchased) {
     products
-        .doc(productID)
+        .doc('totalData')
+        .collection("totalOfProducts")
+        .doc('totalData')
         .set({
-          'productID': productID,
-          'productName': productName,
-          'pricePerItemPurchased': pricePerItemPurchased,
-          'pricePerItemToSell': pricePerItemToSell,
-          'quantity': quantity
-        })
-        .then((value) => print("ADDED"))
-        .catchError((error) => print("Something Went Wrong"));
+      "totalPricePurchased": totalOfPurchased,
+       "totalPriceToSell": 0.0
+    }).then((value) {
+      print("NEW DATA IS INSERTED");
+    });
+  }
+
+  getTotal(double pricePerItemPurchased, double pricePerItemToSell) {
+    products
+        .doc('totalData')
+        .collection('totalOfProducts')
+        .doc('totalData')
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        totalPricePurchased = snapshot.get('totalPricePurchased');
+        double totalPurchased = totalPricePurchased += pricePerItemPurchased;
+        updateTotalSold(totalPurchased);
+      } else {
+        saveTotal(pricePerItemPurchased);
+      }
+    });
+  }
+
+  //update the total
+  updateTotalSold(double totalOfPurchased) {
+    products
+        .doc('totalData')
+        .collection("totalOfProducts")
+        .doc('totalData')
+        .update({
+      "totalPricePurchased": totalOfPurchased,
+    }).then((value) {
+      print("DATA IS UPDATED");
+    });
   }
 
   List<ProductModel> getProductSnapshot(QuerySnapshot snapshot) {
@@ -79,7 +123,7 @@ class Service {
     }).toList();
   }
 
-  Stream<List<HistoryModel>>  getHistoryStream(String userID) {
+  Stream<List<HistoryModel>> getHistoryStream(String userID) {
     return users
         .doc(userID)
         .collection("History")

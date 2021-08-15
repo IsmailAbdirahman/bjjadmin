@@ -11,9 +11,12 @@ class ProductsListScreen extends StatefulWidget {
 }
 
 class _ProductsListScreenState extends State<ProductsListScreen> {
+  Stream<List<ProductModel>>? productStream;
+
   @override
   void initState() {
     super.initState();
+    productStream = context.read(productListProvider).getProductStream;
   }
 
   @override
@@ -21,7 +24,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
     return Consumer(builder: (BuildContext context, watch, child) {
       final productProviderWatch = watch(productListProvider);
       return StreamBuilder<List<ProductModel>>(
-          stream: productProviderWatch.getProductStream,
+          stream: productStream,
           builder: (BuildContext context, snapshot) {
             if (snapshot.data != null) {
               productProviderWatch.getListOfProducts(snapshot.data!);
@@ -43,6 +46,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (BuildContext context, int index) {
+                              print("::::::::::::::::::: ${data[index].pricePerItemToSell}");
                               return ProductTile(
                                 productModel: data[index],
                               );
@@ -87,18 +91,18 @@ class ProductTile extends StatelessWidget {
           ),
           CardInfo(
             desc: "Inta Xabo ka taalo: ",
-            text: productModel!.quantity,
+            text: productModel!.quantity.toString(),
           ),
           SizedBox(
             height: 20,
           ),
           CardInfo(
             desc: "Halki Xabo Qiimahiisa: ",
-            text: productModel!.pricePerItemToSell,
+            text: productModel!.pricePerItemToSell.toString(),
           ),
           CardInfo(
             desc: "Qiimaha lagu so iibiyay: ",
-            text: productModel!.pricePerItemPurchased,
+            text: productModel!.pricePerItemPurchased.toString(),
           ),
         ],
       ),

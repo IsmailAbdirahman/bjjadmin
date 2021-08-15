@@ -13,9 +13,9 @@ class ProductListState extends ChangeNotifier {
 
   addData(
       {String? productName,
-      String? pricePerItemPurchased,
-      String? pricePerItemToSell,
-      String? quantity}) {
+      double? pricePerItemPurchased,
+        double? pricePerItemToSell,
+      int? quantity}) {
     Service().addData(
         productName: productName,
         pricePerItemPurchased: pricePerItemPurchased,
