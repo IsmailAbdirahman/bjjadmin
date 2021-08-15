@@ -83,18 +83,18 @@ class HistoryTile extends StatelessWidget {
           ),
           CardInfo(
             desc: "Inta Xabo la iibiyay: ",
-            text: historyModel!.quantity,
+            text: historyModel!.quantity.toString(),
           ),
           SizedBox(
             height: 20,
           ),
           CardInfo(
             desc: "Halki xabo Qiimaha Lagu iibiyay: ",
-            text: historyModel!.pricePerItemToSell,
+            text: historyModel!.pricePerItemToSell.toString(),
           ),
           CardInfo(
             desc: "Total: ",
-            text: historyModel!.totalPrice,
+            text: historyModel!.totalPrice.toString(),
           ),
         ],
       ),

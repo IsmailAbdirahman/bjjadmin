@@ -1,9 +1,9 @@
 class HistoryModel {
   String? historyID;
   String? productName;
-  String? pricePerItemToSell;
-  String? quantity;
-  String? totalPrice;
+  double? pricePerItemToSell;
+  int? quantity;
+  double? totalPrice;
 
   HistoryModel(
       {this.historyID,
