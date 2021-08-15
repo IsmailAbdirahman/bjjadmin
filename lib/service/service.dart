@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bjjapp/models/history_moddel.dart';
 import 'package:bjjapp/models/product_model.dart';
+import 'package:bjjapp/models/total_products_price_model.dart';
 import 'package:bjjapp/models/users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -28,7 +29,7 @@ class Service {
       'pricePerItemToSell': pricePerItemToSell,
       'quantity': quantity
     }).then((_) {
-      getTotal(pricePerItemPurchased!, pricePerItemToSell!);
+      getTotal(pricePerItemPurchased!, pricePerItemToSell!, quantity!);
     });
   }
 
@@ -40,13 +41,15 @@ class Service {
         .doc('totalData')
         .set({
       "totalPricePurchased": totalOfPurchased,
-       "totalPriceToSell": 0.0
+      "totalPriceToSell": 0.0
     }).then((value) {
       print("NEW DATA IS INSERTED");
     });
   }
 
-  getTotal(double pricePerItemPurchased, double pricePerItemToSell) {
+  getTotal(
+      double pricePerItemPurchased, double pricePerItemToSell, int quantity) {
+    double totalPriceOfSingleProduct = pricePerItemPurchased * quantity;
     products
         .doc('totalData')
         .collection('totalOfProducts')
@@ -55,10 +58,11 @@ class Service {
         .then((DocumentSnapshot snapshot) {
       if (snapshot.exists) {
         totalPricePurchased = snapshot.get('totalPricePurchased');
-        double totalPurchased = totalPricePurchased += pricePerItemPurchased;
+        double totalPurchased =
+            totalPricePurchased += totalPriceOfSingleProduct;
         updateTotalSold(totalPurchased);
       } else {
-        saveTotal(pricePerItemPurchased);
+        saveTotal(totalPriceOfSingleProduct);
       }
     });
   }
@@ -75,6 +79,14 @@ class Service {
       print("DATA IS UPDATED");
     });
   }
+
+  TotalProductsPriceModel getTotalSold(DocumentSnapshot snapshot) {
+    return TotalProductsPriceModel(
+        totalPurchased: snapshot.get('totalPricePurchased'),
+        totalSold: snapshot.get('totalPriceToSell'));
+  }
+
+
 
   List<ProductModel> getProductSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

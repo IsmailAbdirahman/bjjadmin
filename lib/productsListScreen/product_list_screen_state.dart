@@ -1,4 +1,5 @@
 import 'package:bjjapp/models/product_model.dart';
+import 'package:bjjapp/models/total_products_price_model.dart';
 import 'package:bjjapp/service/service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,5 +30,14 @@ class ProductListState extends ChangeNotifier {
 
   Stream<List<ProductModel>> get getProductStream {
     return Service().products.snapshots().map(Service().getProductSnapshot);
+  }
+
+  Stream<TotalProductsPriceModel> get totalSoldStream {
+    return Service().products
+        .doc('totalData')
+        .collection('totalOfProducts')
+        .doc('totalData')
+        .snapshots()
+        .map(Service().getTotalSold);
   }
 }

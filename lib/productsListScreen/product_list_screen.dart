@@ -1,4 +1,5 @@
 import 'package:bjjapp/models/product_model.dart';
+import 'package:bjjapp/models/total_products_price_model.dart';
 import 'package:bjjapp/productsListScreen/add_new_products.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen_state.dart';
 import 'package:bjjapp/widgets/serach_bar.dart';
@@ -12,11 +13,13 @@ class ProductsListScreen extends StatefulWidget {
 
 class _ProductsListScreenState extends State<ProductsListScreen> {
   Stream<List<ProductModel>>? productStream;
+  Stream<TotalProductsPriceModel>? totalSoldStreamData;
 
   @override
   void initState() {
     super.initState();
     productStream = context.read(productListProvider).getProductStream;
+    totalSoldStreamData = context.read(productListProvider).totalSoldStream;
   }
 
   @override
@@ -42,11 +45,38 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 ),
                 body: Column(
                   children: [
+                    StreamBuilder<TotalProductsPriceModel>(
+                      stream: totalSoldStreamData,
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.hasData) {
+                          TotalProductsPriceModel data = snapshot.data!;
+                          return SizedBox(
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                DisplayTotalData(
+                                  title: "Total Benefit",
+                                  color: Colors.green,
+                                  data: data.totalSold.toString(),
+                                ),
+                                DisplayTotalData(
+                                  title: "Total Paid",
+                                  color: Colors.orange,
+                                  data: data.totalPurchased.toString(),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
                     Expanded(
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (BuildContext context, int index) {
-                              print("::::::::::::::::::: ${data[index].pricePerItemToSell}");
                               return ProductTile(
                                 productModel: data[index],
                               );
@@ -68,6 +98,26 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
             }
           });
     });
+  }
+}
+
+class DisplayTotalData extends StatelessWidget {
+  final String? data;
+  final String? title;
+  final Color? color;
+
+  DisplayTotalData({this.data, this.color, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 100,
+        width: 120,
+        color: color,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(title!), Text(data!)],
+        ));
   }
 }
 
