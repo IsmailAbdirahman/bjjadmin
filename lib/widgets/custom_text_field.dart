@@ -15,6 +15,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: TextInputType.number,
       controller: widget.controller,
       decoration: InputDecoration(
           hintText: widget.hintName,

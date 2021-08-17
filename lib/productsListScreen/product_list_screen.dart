@@ -58,12 +58,12 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 DisplayTotalData(
                                   title: "Total Benefit",
                                   color: Colors.green,
-                                  data: data.totalSold.toString(),
+                                  data: "\$${data.totalSold.toString()}",
                                 ),
                                 DisplayTotalData(
                                   title: "Total Paid",
                                   color: Colors.orange,
-                                  data: data.totalPurchased.toString(),
+                                  data: "\$${data.totalPurchased.toString()}",
                                 ),
                               ],
                             ),
