@@ -5,14 +5,12 @@ class ProductModel {
   double? pricePerItemPurchased;
   double? pricePerItemToSell;
   int? quantity;
+  String? productID;
 
-  ProductModel({
-    this.productName,
-    this.pricePerItemPurchased,
-    this.pricePerItemToSell,
-    this.quantity,
-  });
-
-
+  ProductModel(
+      {this.productName,
+      this.pricePerItemPurchased,
+      this.pricePerItemToSell,
+      this.quantity,
+      this.productID});
 }
-

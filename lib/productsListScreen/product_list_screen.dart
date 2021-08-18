@@ -18,8 +18,12 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   @override
   void initState() {
     super.initState();
-    productStream = context.read(productListProvider).getProductStream;
-    totalSoldStreamData = context.read(productListProvider).totalSoldStream;
+    productStream = context
+        .read(productListProvider)
+        .getProductStream;
+    totalSoldStreamData = context
+        .read(productListProvider)
+        .totalSoldStream;
   }
 
   @override
@@ -39,7 +43,9 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   actions: [
                     SearchBarWidget(
                       searchProductName:
-                          context.read(productListProvider).productList,
+                      context
+                          .read(productListProvider)
+                          .productList,
                     ),
                   ],
                 ),
@@ -77,8 +83,20 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return ProductTile(
-                                productModel: data[index],
+                              return InkWell(
+                                onLongPress: () {
+                                  context.read(productListProvider)
+                                      .deleteProduct(
+                                      prodID: data[index].productID!,
+                                      pricePurchase: data[index]
+                                          .pricePerItemPurchased!,
+                                      priceSold: data[index]
+                                          .pricePerItemToSell!,
+                                      quantityLeft: data[index].quantity!);
+                                },
+                                child: ProductTile(
+                                  productModel: data[index],
+                                ),
                               );
                             }))
                   ],

@@ -19,6 +19,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       decoration: InputDecoration(
           hintText: widget.hintName,
+          hintStyle: TextStyle(fontSize: 12.5),
           border:
           OutlineInputBorder(borderSide: BorderSide(color: Colors.black))),
     );

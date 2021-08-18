@@ -8,14 +8,14 @@ final productListProvider = ChangeNotifierProvider((ref) => ProductListState());
 
 //--
 class ProductListState extends ChangeNotifier {
-  List<ProductModel> _productList=[];
+  List<ProductModel> _productList = [];
 
   List<ProductModel> get productList => _productList;
 
   addData(
       {String? productName,
       double? pricePerItemPurchased,
-        double? pricePerItemToSell,
+      double? pricePerItemToSell,
       int? quantity}) {
     Service().addData(
         productName: productName,
@@ -28,12 +28,25 @@ class ProductListState extends ChangeNotifier {
     _productList = products;
   }
 
+  deleteProduct(
+      {required String prodID,
+      required double pricePurchase,
+      required double priceSold,
+      required int quantityLeft}) {
+    Service().deleteProduct(
+        prodID: prodID,
+        pricePurchase: pricePurchase,
+        priceSold: priceSold,
+        quantityLeft: quantityLeft);
+  }
+
   Stream<List<ProductModel>> get getProductStream {
     return Service().products.snapshots().map(Service().getProductSnapshot);
   }
 
   Stream<TotalProductsPriceModel> get totalSoldStream {
-    return Service().products
+    return Service()
+        .products
         .doc('totalData')
         .collection('totalOfProducts')
         .doc('totalData')

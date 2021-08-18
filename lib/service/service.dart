@@ -33,6 +33,34 @@ class Service {
     });
   }
 
+  deleteProduct(
+      {required String prodID,
+      required double pricePurchase,
+      required double priceSold,
+      required int quantityLeft}) {
+    deleteAndUpdateTotal(pricePurchase, priceSold, quantityLeft).then((_) {
+      products.doc(prodID).delete();
+    });
+  }
+
+  Future deleteAndUpdateTotal(double pricePerItemPurchased,
+      double pricePerItemToSell, int quantity) async {
+    double totalPriceOfSingleProduct = pricePerItemPurchased * quantity;
+    await products
+        .doc('totalData')
+        .collection('totalOfProducts')
+        .doc('totalData')
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        totalPricePurchased = snapshot.get('totalPricePurchased');
+        double totalPurchased =
+            totalPricePurchased -= totalPriceOfSingleProduct;
+        updateTotalSold(totalPurchased);
+      }
+    });
+  }
+
   //save the total
   saveTotal(double totalOfPurchased) {
     products
@@ -86,11 +114,10 @@ class Service {
         totalSold: snapshot.get('totalPriceToSell'));
   }
 
-
-
   List<ProductModel> getProductSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ProductModel(
+          productID: doc['productID'],
           productName: doc['productName'],
           pricePerItemPurchased: doc['pricePerItemPurchased'],
           pricePerItemToSell: doc['pricePerItemToSell'],

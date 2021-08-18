@@ -1,5 +1,6 @@
 import 'package:bjjapp/productsListScreen/product_list_screen.dart';
 import 'package:bjjapp/signin/signin_state.dart';
+import 'package:bjjapp/widgets/bottom_navigation_widget.dart';
 import 'package:bjjapp/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +41,7 @@ class _AddNewProductsState extends State<AddNewProducts> {
                   controller: _productNameController,
                   decoration: InputDecoration(
                       hintText: 'Magaca sheyga aad iibin rabtid ?',
+                      hintStyle: TextStyle(fontSize: 12.5),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black))),
                 )),
@@ -47,14 +49,14 @@ class _AddNewProductsState extends State<AddNewProducts> {
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
                 controller: _pricePerItemPurchasedController,
-                hintName: 'Imisa ayaad kusoo iibisay Adiga ?',
+                hintName: 'Imisa ayaad kusoo iibisay Halkii Xabo ?',
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomTextField(
                 controller: _pricePerItemToSellController,
-                hintName: 'Imisa ayaad doneysaa in aad ku iibiso ?',
+                hintName: 'Imisa ayaad doneysaa in aad ku iibiso Halkii Xabo ?',
               ),
             ),
             Padding(
@@ -109,7 +111,7 @@ class _AddNewProductsState extends State<AddNewProducts> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ProductsListScreen()));
+                                                DisplayData()));
                                   });
                                 },
                                 child: Text("Haa")),
