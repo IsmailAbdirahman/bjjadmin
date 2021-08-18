@@ -18,12 +18,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
   @override
   void initState() {
     super.initState();
-    productStream = context
-        .read(productListProvider)
-        .getProductStream;
-    totalSoldStreamData = context
-        .read(productListProvider)
-        .totalSoldStream;
+    productStream = context.read(productListProvider).getProductStream;
+    totalSoldStreamData = context.read(productListProvider).totalSoldStream;
   }
 
   @override
@@ -43,9 +39,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                   actions: [
                     SearchBarWidget(
                       searchProductName:
-                      context
-                          .read(productListProvider)
-                          .productList,
+                          context.read(productListProvider).productList,
                     ),
                   ],
                 ),
@@ -85,14 +79,44 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onLongPress: () {
-                                  context.read(productListProvider)
-                                      .deleteProduct(
-                                      prodID: data[index].productID!,
-                                      pricePurchase: data[index]
-                                          .pricePerItemPurchased!,
-                                      priceSold: data[index]
-                                          .pricePerItemToSell!,
-                                      quantityLeft: data[index].quantity!);
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                            'Delete ayaad dhihi rabtaa'),
+                                        content: const Text(
+                                            "Ma hubtaa Sheygan in ad baahneen ?"),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                context
+                                                    .read(productListProvider)
+                                                    .deleteProduct(
+                                                        prodID: data[index]
+                                                            .productID!,
+                                                        pricePurchase: data[
+                                                                index]
+                                                            .pricePerItemPurchased!,
+                                                        priceSold: data[index]
+                                                            .pricePerItemToSell!,
+                                                        quantityLeft:
+                                                            data[index]
+                                                                .quantity!);
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Haa")),
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Maya")),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 child: ProductTile(
                                   productModel: data[index],
@@ -160,6 +184,7 @@ class ProductTile extends StatelessWidget {
           CardInfo(
             desc: "Inta Xabo ka taalo: ",
             text: productModel!.quantity.toString(),
+            color: productModel!.quantity! > 16 ? Colors.black : Colors.red,
           ),
           SizedBox(
             height: 20,
@@ -181,8 +206,9 @@ class ProductTile extends StatelessWidget {
 class CardInfo extends StatelessWidget {
   final String? desc;
   final String? text;
+  final Color? color;
 
-  const CardInfo({Key? key, this.desc, this.text});
+  const CardInfo({Key? key, this.desc, this.text, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +221,10 @@ class CardInfo extends StatelessWidget {
         SizedBox(
           width: 70,
         ),
-        Text(text!),
+        Text(
+          text!,
+          style: TextStyle(color: color),
+        ),
       ],
     );
   }
