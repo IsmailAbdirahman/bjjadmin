@@ -30,6 +30,7 @@ class AddNewUser extends ConsumerWidget {
                   await context
                       .read(addingNewUserProvider)
                       .addNewUser(_newPhoneNumberController.text, false);
+                  FocusScope.of(context).unfocus();
                 },
                 child: Text("Create")),
             Expanded(

@@ -69,7 +69,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                             ),
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return Text("No data");
                         }
                       },
                     ),
@@ -88,7 +88,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                         title: const Text(
                                             'Delete ayaad dhihi rabtaa'),
                                         content: const Text(
-                                            "Ma hubtaa Sheygan in ad baahneen ?"),
+                                            "Ma hubtaa Sheygan in adan u baahneen ?"),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
