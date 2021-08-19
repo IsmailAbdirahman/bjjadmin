@@ -29,19 +29,14 @@ class homeState extends State<DisplayData> {
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
-        bottomNavigationBar: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-            ),
-            child: getBottomNavigationBar()));
+        bottomNavigationBar: getBottomNavigationBar());
   }
 
   Widget getBottomNavigationBar() {
     return BottomNavigationBar(
-      backgroundColor: Color(0Xff000000),
+      backgroundColor: Colors.deepPurple,
       elevation: 0,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.white70,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Users"),

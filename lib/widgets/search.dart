@@ -12,8 +12,8 @@ class SearchProduct extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      primaryColor: Colors.blueAccent,
-      backgroundColor: Colors.blueAccent,
+      primaryColor: Colors.deepPurple,
+      backgroundColor: Colors.deepPurple,
     );
   }
 
@@ -79,9 +79,7 @@ class SearchProduct extends SearchDelegate {
         .startsWith(query.toLowerCase()))
         .toList();
     return Container(
-      height: 140,
-      width: double.infinity,
-
+      height: 250,
       child: ListView.builder(
           primary: false,
           itemCount: suggestionList.length,

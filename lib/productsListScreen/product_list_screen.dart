@@ -36,6 +36,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
                   title: Text("Home"),
+                  centerTitle: true,
                   actions: [
                     SearchBarWidget(
                       searchProductName:
@@ -50,19 +51,19 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       builder: (BuildContext context, snapshot) {
                         if (snapshot.hasData) {
                           TotalProductsPriceModel data = snapshot.data!;
-                          return SizedBox(
-                            height: 100,
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 18.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 DisplayTotalData(
-                                  title: "Total Benefit",
-                                  color: Colors.green,
+                                  title: "Benefit",
+                                  color: Colors.green[700],
                                   data: "\$${data.totalSold.toString()}",
                                 ),
                                 DisplayTotalData(
-                                  title: "Total Paid",
-                                  color: Colors.orange,
+                                  title: "Paid",
+                                  color: Colors.blue[700],
                                   data: "\$${data.totalPurchased.toString()}",
                                 ),
                               ],
@@ -155,10 +156,24 @@ class DisplayTotalData extends StatelessWidget {
     return Container(
         height: 100,
         width: 120,
-        color: color,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(title!), Text(data!)],
+        child: Card(
+          color: color,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title!,
+                style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(data!,
+                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800)),
+              )
+            ],
+          ),
         ));
   }
 }
@@ -170,34 +185,45 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.lightBlueAccent[100],
-      child: Column(
-        children: [
-          CardInfo(
-            desc: "Magaca: ",
-            text: productModel!.productName,
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Card(
+        elevation: 10,
+        color: Colors.deepPurple[700],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            children: [
+              CardInfo(
+                desc: "Magaca: ",
+                text: productModel!.productName,
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Inta Xabo ka taalo: ",
+                text: productModel!.quantity.toString(),
+                color: productModel!.quantity! > 16 ? Colors.white : Colors.red,
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Halki Xabo Qiimahiisa: ",
+                text: "\$${productModel!.pricePerItemToSell}",
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Qiimaha lagu so iibiyay: ",
+                text: "\$${productModel!.pricePerItemPurchased}",
+              ),
+            ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          CardInfo(
-            desc: "Inta Xabo ka taalo: ",
-            text: productModel!.quantity.toString(),
-            color: productModel!.quantity! > 16 ? Colors.black : Colors.red,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CardInfo(
-            desc: "Halki Xabo Qiimahiisa: ",
-            text: productModel!.pricePerItemToSell.toString(),
-          ),
-          CardInfo(
-            desc: "Qiimaha lagu so iibiyay: ",
-            text: productModel!.pricePerItemPurchased.toString(),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -213,17 +239,22 @@ class CardInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           desc!,
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),
         ),
-        SizedBox(
-          width: 70,
+        VerticalDivider(
+          color: Colors.white,
         ),
-        Text(
-          text!,
-          style: TextStyle(color: color),
+        Padding(
+          padding: const EdgeInsets.only(right: 28.0),
+          child: Text(
+            text!,
+            style: TextStyle(
+                color: color ?? Colors.white, fontWeight: FontWeight.w600),
+          ),
         ),
       ],
     );
