@@ -29,6 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
               return Scaffold(
                 appBar: AppBar(
+                  centerTitle: true,
                   automaticallyImplyLeading: false,
                   title: Text("History"),
                   actions: [
@@ -66,37 +67,51 @@ class HistoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.lightBlueAccent[100],
-      child: Column(
-        children: [
-          CardInfo(
-            desc: "ID: ",
-            text: historyModel!.historyID,
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 10,
+        color: Colors.deepPurple[700],
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            children: [
+              CardInfo(
+                desc: "ID: ",
+                text: historyModel!.historyID,
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Magaca: ",
+                text: historyModel!.productName,
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Inta Xabo la iibiyay: ",
+                text: historyModel!.quantity.toString(),
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Halki xabo Qiimaha Lagu iibiyay: ",
+                text: historyModel!.pricePerItemToSell.toString(),
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
+                desc: "Total: ",
+                text: historyModel!.totalPrice.toString(),
+              ),
+            ],
           ),
-          CardInfo(
-            desc: "Magaca: ",
-            text: historyModel!.productName,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CardInfo(
-            desc: "Inta Xabo la iibiyay: ",
-            text: historyModel!.quantity.toString(),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CardInfo(
-            desc: "Halki xabo Qiimaha Lagu iibiyay: ",
-            text: historyModel!.pricePerItemToSell.toString(),
-          ),
-          CardInfo(
-            desc: "Total: ",
-            text: historyModel!.totalPrice.toString(),
-          ),
-        ],
+        ),
       ),
     );
   }

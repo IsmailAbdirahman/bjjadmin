@@ -36,8 +36,8 @@ class SearchHistory extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      primaryColor: Colors.blueAccent,
-      backgroundColor: Colors.blueAccent,
+      primaryColor: Colors.deepPurple,
+      backgroundColor: Colors.deepPurple,
     );
   }
 
@@ -75,7 +75,7 @@ class SearchHistory extends SearchDelegate {
                 .startsWith(query.toLowerCase()))
             .toList())!;
     return Container(
-      height: 140,
+      height: 280,
       width: double.infinity,
       child: ListView.builder(
           primary: false,
@@ -103,7 +103,7 @@ class SearchHistory extends SearchDelegate {
                 .startsWith(query.toLowerCase()))
             .toList();
     return Container(
-      height: 140,
+      height: 280,
       width: double.infinity,
       child: ListView.builder(
           primary: false,
