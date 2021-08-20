@@ -78,6 +78,13 @@ class HistoryTile extends StatelessWidget {
           child: Column(
             children: [
               CardInfo(
+                desc: "Taarikhda la iibiyay: ",
+                text: historyModel!.dateSold,
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
                 desc: "ID: ",
                 text: historyModel!.historyID,
               ),

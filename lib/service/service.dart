@@ -146,17 +146,15 @@ class Service {
       }
       idList.forEach((userId) {
         users.doc(userId).collection('History').get().then((snapshot) {
-          for(DocumentSnapshot ds in snapshot.docs ){
+          for (DocumentSnapshot ds in snapshot.docs) {
             ds.reference.delete();
           }
         });
       });
-
     });
 
     users.get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {
-
         ds.reference.delete();
       }
     });
@@ -191,6 +189,7 @@ class Service {
   List<HistoryModel> getHistorySnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return HistoryModel(
+          dateSold: doc['dateSold'],
           historyID: doc['historyID'],
           productName: doc['productName'],
           pricePerItemToSell: doc['pricePerItemToSell'],

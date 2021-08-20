@@ -4,11 +4,13 @@ class HistoryModel {
   double? pricePerItemToSell;
   int? quantity;
   double? totalPrice;
+  String? dateSold;
 
   HistoryModel(
       {this.historyID,
-        this.productName,
-        this.pricePerItemToSell,
-        this.quantity,
-        this.totalPrice});
+      this.productName,
+      this.pricePerItemToSell,
+      this.quantity,
+      this.dateSold,
+      this.totalPrice});
 }
