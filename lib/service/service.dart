@@ -125,6 +125,43 @@ class Service {
     }).toList();
   }
 
+  deleteAllData() {
+    products
+        .doc('totalData')
+        .collection("totalOfProducts")
+        .doc('totalData')
+        .delete();
+
+    products.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+
+    var idList = [];
+
+    users.get().then((querySnapshot) {
+      for (DocumentSnapshot ds in querySnapshot.docs) {
+        idList.add(ds.id);
+      }
+      idList.forEach((userId) {
+        users.doc(userId).collection('History').get().then((snapshot) {
+          for(DocumentSnapshot ds in snapshot.docs ){
+            ds.reference.delete();
+          }
+        });
+      });
+
+    });
+
+    users.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+
+        ds.reference.delete();
+      }
+    });
+  }
+
 //---------------- adding new user ----------------------
   addNewUser(String phoneNumber, bool isBlocked) async {
     await users

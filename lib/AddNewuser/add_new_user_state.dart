@@ -21,7 +21,7 @@ class AddNewUserState extends ChangeNotifier {
 
   userStatus() {
     _isBlocked = !_isBlocked;
-   // notifyListeners();
+    // notifyListeners();
   }
 
   blockUnblockUser(String phoneNumber, bool isBlocked) async {
@@ -29,13 +29,15 @@ class AddNewUserState extends ChangeNotifier {
     notifyListeners();
   }
 
-
+  deleteAllData() {
+    _service.deleteAllData();
+  }
 
   Stream<List<UserInfo>> get getPhoneNumberStream {
     return Service().users.snapshots().map(Service().getPhoneNumberSnapshot);
   }
-  Stream<List<HistoryModel>>  getHistoryStreamm(String userID) {
+
+  Stream<List<HistoryModel>> getHistoryStreamm(String userID) {
     return _service.getHistoryStream(userID);
   }
-
-  }
+}

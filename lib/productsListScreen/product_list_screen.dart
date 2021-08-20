@@ -1,10 +1,17 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:bjjapp/models/product_model.dart';
 import 'package:bjjapp/models/total_products_price_model.dart';
 import 'package:bjjapp/productsListScreen/add_new_products.dart';
 import 'package:bjjapp/productsListScreen/product_list_screen_state.dart';
+import 'package:bjjapp/service/service.dart';
 import 'package:bjjapp/widgets/serach_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 
 class ProductsListScreen extends StatefulWidget {
   @override
@@ -12,14 +19,23 @@ class ProductsListScreen extends StatefulWidget {
 }
 
 class _ProductsListScreenState extends State<ProductsListScreen> {
+  String? randomTex;
+
   Stream<List<ProductModel>>? productStream;
   Stream<TotalProductsPriceModel>? totalSoldStreamData;
+  TextEditingController randomTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     productStream = context.read(productListProvider).getProductStream;
     totalSoldStreamData = context.read(productListProvider).totalSoldStream;
+
+    Random rnd = Random();
+    String getRandomString(int length) =>
+        String.fromCharCodes(Iterable.generate(
+            length, (_) => _chars.codeUnitAt(rnd.nextInt(_chars.length))));
+    randomTex = getRandomString(10);
   }
 
   @override
@@ -35,6 +51,119 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
               return Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
+                  leading: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) {
+                              return BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  //this right here
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.50,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Align(
+                                              alignment: Alignment.topRight,
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Icon(Icons.clear))),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text:
+                                                        'Si aad delete u dhahdid Fadlan mesha banaan ku buuxi qoraalkan:  ',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                    text: randomTex,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.deepPurple)),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(18.0),
+                                            child: TextField(
+                                              controller: randomTextController,
+                                              decoration: InputDecoration(
+                                                  hintText: "Example: hdsghdg"),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
+                                              ),
+                                              child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                new BorderRadius
+                                                                        .circular(
+                                                                    30.0),
+                                                          ),
+                                                          primary:
+                                                              Colors.red[800]),
+                                                  child: Text(
+                                                    "Delete All Data",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+                                                    if (randomTextController
+                                                            .text ==
+                                                        randomTex) {
+                                                      Service().deleteAllData();
+                                                      Navigator.pop(context);
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "Waa Qalad, Fadlan si sax ah u geli",
+                                                          toastLength:
+                                                              Toast.LENGTH_LONG,
+                                                          gravity: ToastGravity
+                                                              .CENTER,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.white,
+                                                          fontSize: 16.0);
+                                                    }
+                                                  }),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: Icon(Icons.dangerous,color: Colors.deepPurple[600],)),
                   title: Text("Home"),
                   centerTitle: true,
                   actions: [
@@ -123,7 +252,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                   productModel: data[index],
                                 ),
                               );
-                            }))
+                            })),
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
@@ -165,12 +294,14 @@ class DisplayTotalData extends StatelessWidget {
             children: [
               Text(
                 title!,
-                style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(data!,
-                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800)),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w800)),
               )
             ],
           ),
@@ -243,7 +374,7 @@ class CardInfo extends StatelessWidget {
       children: [
         Text(
           desc!,
-          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white70),
         ),
         VerticalDivider(
           color: Colors.white,
