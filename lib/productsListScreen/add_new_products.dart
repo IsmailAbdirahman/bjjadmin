@@ -107,11 +107,12 @@ class _AddNewProductsState extends State<AddNewProducts> {
                                           textColor: Colors.white,
                                           fontSize: 16.0)
                                       .then((value) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DisplayData()));
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DisplayData()),
+                                      (route) => false,
+                                    );
                                   });
                                 },
                                 child: Text("Haa")),
