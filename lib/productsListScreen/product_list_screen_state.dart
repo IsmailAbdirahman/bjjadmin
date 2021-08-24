@@ -13,11 +13,13 @@ class ProductListState extends ChangeNotifier {
   List<ProductModel> get productList => _productList;
 
   addData(
-      {String? productName,
-      double? pricePerItemPurchased,
-      double? pricePerItemToSell,
-      int? quantity}) {
+      {required double? groupPrice,
+      required String? productName,
+      required double? pricePerItemPurchased,
+      required double? pricePerItemToSell,
+      required int? quantity}) {
     Service().addData(
+      groupPrice:groupPrice ,
         productName: productName,
         pricePerItemPurchased: pricePerItemPurchased,
         pricePerItemToSell: pricePerItemToSell,

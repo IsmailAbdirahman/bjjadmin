@@ -18,11 +18,12 @@ class Service {
   String productID = DateTime.now().toString();
 
   addData(
-      {String? productName,
+      {double? groupPrice,String? productName,
       double? pricePerItemPurchased,
       double? pricePerItemToSell,
       int? quantity}) {
     products.doc(productID).set({
+      'groupPrice':groupPrice,
       'productID': productID,
       'productName': productName,
       'pricePerItemPurchased': pricePerItemPurchased,
