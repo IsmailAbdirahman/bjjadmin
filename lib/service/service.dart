@@ -19,12 +19,13 @@ class Service {
   String productID = DateTime.now().toString();
 
   addData(
-      {double? groupPrice,String? productName,
+      {double? groupPrice,
+      String? productName,
       double? pricePerItemPurchased,
       double? pricePerItemToSell,
       int? quantity}) {
     products.doc(productID).set({
-      'groupPrice':groupPrice,
+      'groupPrice': groupPrice,
       'productID': productID,
       'productName': productName,
       'pricePerItemPurchased': pricePerItemPurchased,
@@ -140,14 +141,36 @@ class Service {
       }
     });
 
-    var idList = [];
+    //history collection deleting
+    var historyIdList = [];
 
     users.get().then((querySnapshot) {
       for (DocumentSnapshot ds in querySnapshot.docs) {
-        idList.add(ds.id);
+        historyIdList.add(ds.id);
       }
-      idList.forEach((userId) {
+      historyIdList.forEach((userId) {
         users.doc(userId).collection('History').get().then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.docs) {
+            ds.reference.delete();
+          }
+        });
+      });
+    });
+
+    users.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+
+    //jumlo collection deleting
+    var jumloIdList = [];
+    users.get().then((querySnapshot) {
+      for (DocumentSnapshot ds in querySnapshot.docs) {
+        jumloIdList.add(ds.id);
+      }
+      jumloIdList.forEach((userId) {
+        users.doc(userId).collection('jumlo').get().then((snapshot) {
           for (DocumentSnapshot ds in snapshot.docs) {
             ds.reference.delete();
           }
@@ -207,7 +230,6 @@ class Service {
         .snapshots()
         .map(getHistorySnapshot);
   }
-
 
   List<JumloHistoryModel> getJumloSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
