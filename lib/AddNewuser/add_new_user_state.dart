@@ -12,8 +12,16 @@ final addingNewUserProvider =
 class AddNewUserState extends ChangeNotifier {
   Service _service = Service();
   bool _isBlocked = false;
+  String? _userID;
+
+  String? get userID => _userID;
 
   bool get isBlocked => _isBlocked;
+
+  void getUserID(String user) {
+    _userID = user;
+    notifyListeners();
+  }
 
   addNewUser(String phoneNumber, bool isBlocked) async {
     return await _service.addNewUser(phoneNumber, isBlocked);

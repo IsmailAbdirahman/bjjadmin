@@ -1,5 +1,6 @@
 import 'package:bjjapp/history/history_screen.dart';
 import 'package:bjjapp/models/users_model.dart';
+import 'package:bjjapp/widgets/user_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,7 +28,9 @@ class AddNewUser extends ConsumerWidget {
                 maxLength: 10,
                 keyboardType: TextInputType.number,
                 controller: _newPhoneNumberController,
-                decoration: InputDecoration(hintText: "Enter Mobile Number",),
+                decoration: InputDecoration(
+                  hintText: "Enter Mobile Number",
+                ),
               )),
           TextButton(
               onPressed: () async {
@@ -38,7 +41,7 @@ class AddNewUser extends ConsumerWidget {
                       .addNewUser(_newPhoneNumberController.text, false);
                   _newPhoneNumberController.clear();
                   FocusScope.of(context).unfocus();
-                }else{
+                } else {
                   Fluttertoast.showToast(
                       msg: "Mobile Numberka aad galisay sax ma ahan",
                       toastLength: Toast.LENGTH_LONG,
@@ -63,13 +66,13 @@ class AddNewUser extends ConsumerWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               onTap: () {
+                                context.read(addingNewUserProvider).getUserID(
+                                    userInfoList[index].phoneNumber!);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HistoryScreen(
-                                              userID: userInfoList[index]
-                                                  .phoneNumber!,
-                                            )));
+                                        builder: (context) =>
+                                            DisplayUserData()));
                               },
                               title: Text(userInfoList[index].phoneNumber!),
                               subtitle: Divider(),

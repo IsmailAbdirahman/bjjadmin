@@ -7,22 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HistoryScreen extends StatefulWidget {
-  final String? userID;
 
-  HistoryScreen({required this.userID});
 
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  String? userID;
+  @override
+  void initState() {
+    super.initState();
+    userID = context.read(addingNewUserProvider).userID;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (BuildContext context, watch, child) {
       final historyStateWatch = watch(addingNewUserProvider);
 
       return StreamBuilder<List<HistoryModel>>(
-          stream: historyStateWatch.getHistoryStreamm(widget.userID!),
+          stream: historyStateWatch.getHistoryStreamm(userID!),
           builder: (BuildContext context, snapshot) {
             if (snapshot.data != null) {
               List<HistoryModel> dataSnapshot = snapshot.data!;
@@ -31,7 +37,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 appBar: AppBar(
                   centerTitle: true,
                   automaticallyImplyLeading: false,
-                  title: Text("History"),
+                  title: Text("Tafaariiq"),
                   actions: [
                     SearchBarHistoryWidget(
                       searchHistoryID: dataSnapshot,

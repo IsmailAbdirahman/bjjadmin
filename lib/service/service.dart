@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bjjapp/models/history_moddel.dart';
+import 'package:bjjapp/models/jumlo_history_model.dart';
 import 'package:bjjapp/models/product_model.dart';
 import 'package:bjjapp/models/total_products_price_model.dart';
 import 'package:bjjapp/models/users_model.dart';
@@ -205,6 +206,21 @@ class Service {
         .collection("History")
         .snapshots()
         .map(getHistorySnapshot);
+  }
+
+
+  List<JumloHistoryModel> getJumloSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return JumloHistoryModel(
+          historyID: doc['historyID'],
+          productName: doc['productName'],
+          priceGroupItems: doc['priceGroupItems'],
+          totalPrice: doc['totalPrice'],
+          dateTold: doc['dateSold'],
+          quantity: doc['quantity'],
+          isLoan: doc['isLoan'],
+          nameOfPerson: doc['nameOfPerson']);
+    }).toList();
   }
 
 //------------------------------------Other User---------------------
