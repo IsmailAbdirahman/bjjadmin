@@ -120,6 +120,7 @@ class Service {
   List<ProductModel> getProductSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ProductModel(
+        priceGroupItems: doc['groupPrice'],
           productID: doc['productID'],
           productName: doc['productName'],
           pricePerItemPurchased: doc['pricePerItemPurchased'],

@@ -349,6 +349,13 @@ class ProductTile extends StatelessWidget {
                 color: Colors.white,
               ),
               CardInfo(
+                desc: "Qiimaha jumlada: ",
+                text: "\$${productModel!.priceGroupItems}",
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              CardInfo(
                 desc: "Qiimaha lagu so iibiyay: ",
                 text: "\$${productModel!.pricePerItemPurchased}",
               ),
