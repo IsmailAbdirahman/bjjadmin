@@ -25,17 +25,17 @@ class AddNewUser extends ConsumerWidget {
           Padding(
               padding: const EdgeInsets.all(38.0),
               child: TextField(
-                maxLength: 10,
+                maxLength: 6,
                 keyboardType: TextInputType.number,
                 controller: _newPhoneNumberController,
                 decoration: InputDecoration(
-                  hintText: "Enter Mobile Number",
+                  hintText: "Enter Mobile Number or ID",
                 ),
               )),
           TextButton(
               onPressed: () async {
-                if (_newPhoneNumberController.text.length >= 10 &&
-                    _newPhoneNumberController.text.length <= 10) {
+                if (_newPhoneNumberController.text.length >= 6 &&
+                    _newPhoneNumberController.text.length <= 6) {
                   await context
                       .read(addingNewUserProvider)
                       .addNewUser(_newPhoneNumberController.text, false);
@@ -43,7 +43,7 @@ class AddNewUser extends ConsumerWidget {
                   FocusScope.of(context).unfocus();
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Mobile Numberka aad galisay sax ma ahan",
+                      msg: "6 number kama yaran karo",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 1,
